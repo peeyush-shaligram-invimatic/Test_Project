@@ -1,0 +1,20 @@
+openapi: 3.0.0
+info:
+  title: Visit Counter API
+  version: 1.0.0
+
+paths:
+  /api/hit:
+    get:
+      summary: Increments the visit counter
+      description: Call this endpoint to increment and return the counter.
+      responses:
+        '200':
+          description: Counter incremented
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
