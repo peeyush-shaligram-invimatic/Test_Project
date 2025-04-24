@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <your-account-id>.dkr.ecr.<your-region>.amazonaws.com
+  build:
+    commands:
+      - echo Building the backend Docker image...
+      - docker build -t backend ./backend
+      - echo Building the frontend Docker image...
+      - docker build -t frontend ./frontend
+      - echo Tagging the backend Docker image...
+      - docker tag backend:latest <your-account-id>.dkr.ecr.<your-region>.amazonaws.com/backend:latest
+      - echo Tagging the frontend Docker image...
+      - docker tag frontend:latest <your-account-id>.dkr.ecr.<your-region>.amazonaws.com/frontend:latest
+  post_build:
+    commands:
+      - echo Pushing the backend Docker image to ECR...
+      - docker push <your-account-id>.dkr.ecr.<your-region>.amazonaws.com/backend:latest
+      - echo Pushing the frontend Docker image to ECR...
+      - docker push <your-account-id>.dkr.ecr.<your-region>.amazonaws.com/frontend:latest
+
+artifacts:
+  files: []
